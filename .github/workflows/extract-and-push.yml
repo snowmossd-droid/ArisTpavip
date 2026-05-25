@@ -14,9 +14,13 @@ jobs:
       - name: Unzip plugin
         run: unzip aristpa-plugin.zip -d extracted
 
+      - name: Check extracted folder
+        run: ls extracted/
+
       - name: Move files to root
         run: |
-          cp -r extracted/aristpa_clean/. .
+          FOLDER=$(ls extracted/ | head -1)
+          cp -r extracted/$FOLDER/. .
           rm -rf extracted
 
       - name: Commit and push
