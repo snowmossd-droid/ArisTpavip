@@ -1,0 +1,32 @@
+name: Extract and Push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Unzip plugin
+        run: |
+          unzip aristpa-plugin.zip -d extracted
+          rm -rf extracted/aristpa_clean/src/main/java/me/vennlmao/aristpa/'{commands,gui,listeners,managers,utils}'
+
+      - name: Move files to root
+        run: |
+          shopt -s dotglob
+          cp -r extracted/aristpa_clean/* .
+          rm -rf extracted
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Extract plugin structure"
+          git push
+          
