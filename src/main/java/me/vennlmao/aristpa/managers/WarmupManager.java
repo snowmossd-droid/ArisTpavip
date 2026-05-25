@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class WarmupManager {
 
@@ -34,8 +33,7 @@ public class WarmupManager {
         MessageUtil.sendActionbar(teleporter, "teleporting_ab",
                 s -> s.replace("{seconds}", String.valueOf(seconds)));
 
-        ScheduledTask[] taskHolder = new ScheduledTask[1];
-        taskHolder[0] = teleporter.getScheduler().runAtFixedRate(plugin, scheduledTask -> {
+        ScheduledTask task = teleporter.getScheduler().runAtFixedRate(plugin, scheduledTask -> {
             if (!teleporter.isOnline()) {
                 cancelWarmup(id);
                 return;
@@ -64,9 +62,9 @@ public class WarmupManager {
             MessageUtil.sendActionbar(teleporter, "teleporting_ab",
                     s -> s.replace("{seconds}", String.valueOf(rem)));
 
-        }, null, 20L, 20L, TimeUnit.MILLISECONDS);
+        }, null, 20L, 20L);
 
-        warmupTasks.put(id, taskHolder[0]);
+        warmupTasks.put(id, task);
     }
 
     public void cancelWarmup(UUID playerId) {
@@ -90,4 +88,4 @@ public class WarmupManager {
         warmupLocations.clear();
         warmupCountdowns.clear();
     }
-}
+            }
