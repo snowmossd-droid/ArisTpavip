@@ -12,14 +12,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unzip plugin
-        run: |
-          unzip aristpa-plugin.zip -d extracted
-          rm -rf extracted/aristpa_clean/src/main/java/me/vennlmao/aristpa/'{commands,gui,listeners,managers,utils}'
+        run: unzip aristpa-plugin.zip -d extracted
 
       - name: Move files to root
         run: |
-          shopt -s dotglob
-          cp -r extracted/aristpa_clean/* .
+          cp -r extracted/aristpa_clean/. .
           rm -rf extracted
 
       - name: Commit and push
